@@ -13,4 +13,15 @@ app.use(express.urlencoded({ extended: true, limit: "20kb" }));
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
 
+// middleware
+app.use((err, req, res, next) => {
+  let statusCode = err.statusCode || 500;
+  let erorrMessage = err.message || "Something went wrong!";
+  return res.status(statusCode).send({
+    success: false,
+    statusCode,
+    message: erorrMessage,
+  });
+});
+
 export { app };
